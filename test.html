@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>jscountdown</title>
+        <style>
+            body {position:relative}
+            .center-container {
+                position:absolute;
+                display: table;
+                width: 98%;
+                height: 92%;
+            }
+            .center-container > :first-child {
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+            }
+            .center-container > :first-child > :first-child {
+                display: inline-block;
+                text-align: center;
+            }
+            .align-left {
+                text-align:left;
+            }
+            .big {
+                font-weight:bold;
+                font-size:17px;
+            }
+        </style>
+<!--
+        <script type="text/javascript" src="launch.js"></script>
+-->
+
+    </head>
+    <body>
+        <div class="center-container">
+            <div>
+                <div>
+                    <p>Launching time <input type="text" class="big" id="launch-date"/> <button onclick="relaunch();">Relaunch</button></p>
+                    <div>
+                        The system will be launcing on
+                        <span class="big" id="day"></span> days,
+                        <span class="big" id="hour"></span> hours,
+                        <span class="big" id="minute"></span> minutes,
+                        <span class="big" id="second"></span> seconds.
+                        <span class="big" id="microsecond"></span> microseconds.
+                    </div>
+                    <p id="finish"></p>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="launch.js"></script>
+        <script type="text/javascript">
+            var launchDate = '2014/4/19 01:10';
+            var dtitle = document.title;
+            var countint;
+
+            function _(id) {return document.getElementById(id)}
+
+            function finisher(finish) {
+                var msg = '', title = dtitle;
+                if (finish) {
+                    msg = 'Hooraay, countdown was finish.';
+                    title = dtitle + ' - Hooraay, countdown was finish.';
+                }
+
+                _('finish').innerHTML = msg;
+                document.title = title ;
+            }
+
+            function launcIT (launchDate) {
+                _('launch-date').value = launchDate;
+                return countdown(launchDate, function() {
+                    if (this.finish) {
+                        return finisher(true);
+                    }
+                    _('day').innerHTML = this.day;
+                    _('hour').innerHTML = this.hour;
+                    _('minute').innerHTML = this.minute;
+                    _('second').innerHTML = this.second;
+                    _('microsecond').innerHTML = this.microsecond;
+                }, 1);
+            }
+
+            function relaunch() {
+                var ldate = _('launch-date').value;
+
+                clearInterval(countint);
+                finisher(false);
+                countint = launcIT(ldate);
+            }
+
+            countint = launcIT(launchDate);
+        </script>
+    </body>
+</html>
